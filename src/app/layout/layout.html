@@ -1,0 +1,47 @@
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1 class="logo">Bot Mr T</h1>
+      <span class="badge">Paper Trading</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label">Dashboard</span>
+      </a>
+      <a routerLink="/positions" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">📈</span>
+        <span class="nav-label">Posiciones</span>
+      </a>
+      <a routerLink="/orders" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">📋</span>
+        <span class="nav-label">Órdenes</span>
+      </a>
+      <a routerLink="/strategy" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">🧠</span>
+        <span class="nav-label">Estrategia</span>
+      </a>
+      <a routerLink="/settings" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">Configuración</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="bot-status">
+        <span class="status-dot offline"></span>
+        <span>Bot detenido</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <h2 class="page-title">Administración</h2>
+    </header>
+    <div class="content">
+      <router-outlet />
+    </div>
+  </main>
+</div>
