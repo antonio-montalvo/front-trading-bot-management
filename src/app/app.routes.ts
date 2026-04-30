@@ -1,23 +1,23 @@
 import { Routes } from '@angular/router';
-import { Layout } from './layout/layout';
-import { authGuard } from './shared/guards/auth.guard';
+import { MainLayout } from './core/layout/main-layout/main-layout';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
     path: 'login',
-    loadComponent: () => import('./pages/login/login').then(m => m.Login),
+    loadComponent: () => import('./features/auth/login/login').then(m => m.Login),
   },
   {
     path: '',
-    component: Layout,
+    component: MainLayout,
     canActivate: [authGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.Dashboard) },
-      { path: 'positions', loadComponent: () => import('./pages/positions/positions').then(m => m.Positions) },
-      { path: 'orders', loadComponent: () => import('./pages/orders/orders').then(m => m.Orders) },
-      { path: 'strategy', loadComponent: () => import('./pages/strategy/strategy').then(m => m.Strategy) },
-      { path: 'settings', loadComponent: () => import('./pages/settings/settings').then(m => m.Settings) },
+      { path: 'dashboard', loadComponent: () => import('./features/dashboard/pages/dashboard-page/dashboard-page').then(m => m.DashboardPage) },
+      { path: 'positions', loadComponent: () => import('./features/positions/pages/positions-page/positions-page').then(m => m.PositionsPage) },
+      { path: 'orders', loadComponent: () => import('./features/orders/pages/orders-page/orders-page').then(m => m.OrdersPage) },
+      { path: 'strategy', loadComponent: () => import('./features/strategies/pages/strategy-list-page/strategy-list-page').then(m => m.StrategyListPage) },
+      { path: 'settings', loadComponent: () => import('./features/settings/pages/settings-page/settings-page').then(m => m.SettingsPage) },
     ]
   },
   { path: '**', redirectTo: 'dashboard' }

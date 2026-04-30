@@ -1,0 +1,47 @@
+@if (loading()) {
+  <div class="dashboard-loading">Cargando datos de la cuenta…</div>
+} @else if (error()) {
+  <div class="dashboard-error">{{ error() }}</div>
+} @else if (account(); as acc) {
+  <div class="dashboard">
+    <div class="cards">
+      <div class="card">
+        <span class="card-label">Equity</span>
+        <span class="card-value">{{ acc.equity | currency:'USD' }}</span>
+      </div>
+      <div class="card">
+        <span class="card-label">Cash Disponible</span>
+        <span class="card-value">{{ acc.cash | currency:'USD' }}</span>
+      </div>
+      <div class="card">
+        <span class="card-label">Poder de Compra</span>
+        <span class="card-value">{{ acc.buying_power | currency:'USD' }}</span>
+      </div>
+      <div class="card">
+        <span class="card-label">Valor del Portafolio</span>
+        <span class="card-value">{{ acc.portfolio_value | currency:'USD' }}</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Información de la Cuenta</h3>
+      <div class="status-panel">
+        <div class="status-row">
+          <span>ID</span>
+          <span class="mono">{{ acc.id }}</span>
+        </div>
+        <div class="status-row">
+          <span>Moneda</span>
+          <span>{{ acc.currency }}</span>
+        </div>
+        <div class="status-row">
+          <span>Estado</span>
+          <span class="tag" [class.online]="acc.status === 'ACTIVE'"
+                            [class.offline]="acc.status !== 'ACTIVE'">
+            {{ acc.status === 'ACTIVE' ? 'Activa' : acc.status }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+}
