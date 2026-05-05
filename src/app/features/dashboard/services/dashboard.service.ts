@@ -5,11 +5,13 @@ import { environment } from '../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
-  private readonly baseUrl = `${environment.apiUrl}/dashboard`;
-
   constructor(private readonly http: HttpClient) {}
 
-  getSummary(): Observable<unknown> {
-    return this.http.get(`${this.baseUrl}/summary`);
+  getPnl(): Observable<unknown> {
+    return this.http.get(environment.metricsPnl);
+  }
+
+  getPerformance(): Observable<unknown> {
+    return this.http.get(environment.metricsPerformance);
   }
 }

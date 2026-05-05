@@ -5,15 +5,13 @@ import { environment } from '../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class SettingsService {
-  private readonly baseUrl = `${environment.apiUrl}/settings`;
-
   constructor(private readonly http: HttpClient) {}
 
-  getSettings(): Observable<unknown> {
-    return this.http.get(this.baseUrl);
+  getApiKeys(): Observable<unknown> {
+    return this.http.get(environment.authApiKeys);
   }
 
-  updateSettings(settings: unknown): Observable<unknown> {
-    return this.http.put(this.baseUrl, settings);
+  createApiKey(body: unknown): Observable<unknown> {
+    return this.http.post(environment.authApiKeys, body);
   }
 }

@@ -15,11 +15,17 @@ export interface AccountResponse {
 
 @Injectable({ providedIn: 'root' })
 export class BrokerService {
-  private readonly baseUrl = `${environment.apiUrl}/broker`;
-
   constructor(private readonly http: HttpClient) {}
 
   getAccount(): Observable<AccountResponse> {
-    return this.http.get<AccountResponse>(`${this.baseUrl}/account`);
+    return this.http.get<AccountResponse>(environment.brokerAccount);
+  }
+
+  getPositions(): Observable<unknown[]> {
+    return this.http.get<unknown[]>(environment.brokerPositions);
+  }
+
+  getOrders(): Observable<unknown[]> {
+    return this.http.get<unknown[]>(environment.brokerOrders);
   }
 }

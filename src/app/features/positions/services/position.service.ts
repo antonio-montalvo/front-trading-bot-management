@@ -6,11 +6,9 @@ import { Position } from '../models/position.model';
 
 @Injectable({ providedIn: 'root' })
 export class PositionService {
-  private readonly baseUrl = `${environment.apiUrl}/positions`;
-
   constructor(private readonly http: HttpClient) {}
 
   getAll(): Observable<Position[]> {
-    return this.http.get<Position[]>(this.baseUrl);
+    return this.http.get<Position[]>(environment.brokerPositions);
   }
 }

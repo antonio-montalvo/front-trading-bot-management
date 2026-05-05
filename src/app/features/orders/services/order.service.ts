@@ -6,11 +6,9 @@ import { Order } from '../models/order.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
-  private readonly baseUrl = `${environment.apiUrl}/orders`;
-
   constructor(private readonly http: HttpClient) {}
 
   getAll(): Observable<Order[]> {
-    return this.http.get<Order[]>(this.baseUrl);
+    return this.http.get<Order[]>(environment.brokerOrders);
   }
 }

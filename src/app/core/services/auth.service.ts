@@ -44,7 +44,7 @@ export class AuthService {
 
   login(email: string, password: string): Observable<TokenResponse> {
     return this.http
-      .post<TokenResponse>(`${environment.apiUrl}/auth/login`, { email, password })
+      .post<TokenResponse>(environment.authLogin, { email, password })
       .pipe(
         tap((res) => {
           this.saveSession(email, res);
@@ -54,7 +54,7 @@ export class AuthService {
 
   refresh(): Observable<TokenResponse> {
     return this.http
-      .post<TokenResponse>(`${environment.apiUrl}/auth/refresh`, {
+      .post<TokenResponse>(environment.authRefresh, {
         refresh_token: this.refreshToken,
       })
       .pipe(
