@@ -22,6 +22,9 @@ export const environment = {
   metricsPnl: '/api/metrics/pnl',
   metricsPerformance: '/api/metrics/performance',
 
+  // Dashboard
+  dashboardSummary: '/api/dashboard/summary',
+
   // Strategies
   strategies: '/api/strategies',
 };
