@@ -3,5 +3,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0f172a;
+  background: #0a0a0f;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(168, 85, 247, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(124, 58, 237, 0.06) 0%, transparent 50%);
 }

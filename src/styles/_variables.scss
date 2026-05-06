@@ -1,26 +1,40 @@
-// ── Colors ──────────────────────────────────
-$color-primary: #38bdf8;
-$color-primary-dark: #0ea5e9;
-$color-success: #16a34a;
-$color-danger: #dc2626;
-$color-warning: #eab308;
+// ── Futuristic Theme: Black / White / Purple ──
 
-$color-bg: #f8fafc;
-$color-surface: #fff;
-$color-border: #e2e8f0;
-$color-border-light: #f1f5f9;
+// Purple palette
+$purple: #a855f7;
+$purple-light: #c084fc;
+$purple-dark: #7c3aed;
+$purple-glow: rgba(168, 85, 247, 0.15);
 
-$color-text: #0f172a;
-$color-text-secondary: #334155;
-$color-text-muted: #64748b;
-$color-text-placeholder: #94a3b8;
+// Backgrounds
+$color-bg: #0a0a0f;
+$color-surface: #111118;
+$color-surface-hover: #16161f;
+$color-border: rgba(168, 85, 247, 0.2);
+$color-border-subtle: rgba(255, 255, 255, 0.06);
 
-$sidebar-bg: #0f172a;
-$sidebar-text: #e2e8f0;
-$sidebar-active: #38bdf8;
+// Semantic
+$color-primary: $purple;
+$color-primary-dark: $purple-dark;
+$color-success: #34d399;
+$color-danger: #f87171;
+$color-warning: #fbbf24;
+
+// Text
+$color-text: #f8fafc;
+$color-text-secondary: #a1a1aa;
+$color-text-muted: #71717a;
+$color-text-placeholder: #52525b;
+
+// Sidebar
+$sidebar-bg: #08080d;
+$sidebar-border: rgba(168, 85, 247, 0.12);
+$sidebar-text: #a1a1aa;
+$sidebar-active: $purple-light;
 
 // ── Typography ──────────────────────────────
 $font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 $font-size-xs: 0.75rem;
 $font-size-sm: 0.875rem;
 $font-size-base: 1rem;

@@ -1,5 +1,14 @@
 @use 'page';
 
+$purple-light: #c084fc;
+$border: rgba(168, 85, 247, 0.2);
+$border-subtle: rgba(255, 255, 255, 0.06);
+$bg-panel: #111118;
+$text-muted: #71717a;
+$text-secondary: #a1a1aa;
+$green: #34d399;
+$red: #f87171;
+
 .settings-section {
   display: flex;
   flex-direction: column;
@@ -7,15 +16,21 @@
 }
 
 .settings-card {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
+  background: $bg-panel;
+  border: 1px solid $border;
+  border-radius: 12px;
   padding: 1.25rem;
+  transition: border-color 0.2s;
+
+  &:hover { border-color: rgba(168, 85, 247, 0.4); }
 
   h4 {
     margin: 0 0 0.75rem;
-    font-size: 0.95rem;
-    color: #0f172a;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: $purple-light;
   }
 }
 
@@ -24,27 +39,29 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 0;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid $border-subtle;
   font-size: 0.875rem;
-  color: #334155;
+  color: $text-muted;
 }
 
 .setting-value {
   font-weight: 600;
-  color: #0f172a;
+  color: #f8fafc;
 
   &.masked {
-    font-family: monospace;
+    font-family: 'JetBrains Mono', monospace;
     letter-spacing: 0.1em;
+    color: $text-secondary;
   }
 }
 
 .tag {
   padding: 0.2rem 0.6rem;
   border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
 
-  &.online { background: #dcfce7; color: #166534; }
-  &.offline { background: #fee2e2; color: #991b1b; }
+  &.online { background: rgba(52, 211, 153, 0.15); color: $green; }
+  &.offline { background: rgba(248, 113, 113, 0.15); color: $red; }
 }

@@ -4,8 +4,22 @@
 @mixin card {
   background: $color-surface;
   border: 1px solid $color-border;
-  border-radius: $radius-md;
+  border-radius: $radius-lg;
   padding: 1.25rem;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: rgba(168, 85, 247, 0.4);
+  }
+}
+
+@mixin panel-title {
+  margin: 0;
+  font-size: $font-size-xs;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $purple-light;
 }
 
 @mixin tag($bg, $color) {
@@ -16,4 +30,11 @@
   font-weight: 600;
   background: $bg;
   color: $color;
+}
+
+@mixin gradient-text {
+  background: linear-gradient(135deg, #fff 0%, $purple-light 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

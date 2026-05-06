@@ -1,47 +1,183 @@
 @if (loading()) {
-  <div class="dashboard-loading">Cargando datos de la cuenta…</div>
+  <div class="dashboard-loading">
+    <div class="spinner"></div>
+    <span>Cargando dashboard…</span>
+  </div>
 } @else if (error()) {
   <div class="dashboard-error">{{ error() }}</div>
-} @else if (account(); as acc) {
+} @else if (data(); as d) {
   <div class="dashboard">
-    <div class="cards">
-      <div class="card">
-        <span class="card-label">Equity</span>
-        <span class="card-value">{{ acc.equity | currency:'USD' }}</span>
-      </div>
-      <div class="card">
-        <span class="card-label">Cash Disponible</span>
-        <span class="card-value">{{ acc.cash | currency:'USD' }}</span>
-      </div>
-      <div class="card">
-        <span class="card-label">Poder de Compra</span>
-        <span class="card-value">{{ acc.buying_power | currency:'USD' }}</span>
-      </div>
-      <div class="card">
-        <span class="card-label">Valor del Portafolio</span>
-        <span class="card-value">{{ acc.portfolio_value | currency:'USD' }}</span>
-      </div>
+    <!-- Title -->
+    <header class="dashboard-header">
+      <h1>Dashboard - Trading Bot</h1>
+      <span class="env-badge">{{ d.bot.environment | uppercase }}</span>
+    </header>
+
+    <!-- Row 1: Bot Status | Account | Performance -->
+    <div class="row row-3">
+      <section class="panel">
+        <h2 class="panel-title">Bot Status</h2>
+        <div class="panel-body">
+          <div class="stat-row">
+            <span class="stat-label">Nombre</span>
+            <span class="stat-value">{{ d.bot.name }}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Estado</span>
+            <span class="status-tag" [class.running]="d.bot.status === 'running'"
+                                     [class.stopped]="d.bot.status === 'stopped'">
+              {{ d.bot.status }}
+            </span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Último Run</span>
+            <span class="stat-value mono">{{ d.bot.last_run_at ? (d.bot.last_run_at | date:'short') : '—' }}</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2 class="panel-title">Account</h2>
+        <div class="panel-body">
+          <div class="stat-row">
+            <span class="stat-label">Equity</span>
+            <span class="stat-value highlight">{{ d.account.equity | currency:d.account.currency }}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Cash</span>
+            <span class="stat-value">{{ d.account.cash | currency:d.account.currency }}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Buying Power</span>
+            <span class="stat-value">{{ d.account.buying_power | currency:d.account.currency }}</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2 class="panel-title">Performance</h2>
+        <div class="panel-body">
+          <div class="stat-row">
+            <span class="stat-label">PnL Diario</span>
+            <span class="stat-value" [class.positive]="d.performance.daily_pnl >= 0"
+                                     [class.negative]="d.performance.daily_pnl < 0">
+              {{ d.performance.daily_pnl | currency:'USD' }}
+            </span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">PnL Total</span>
+            <span class="stat-value" [class.positive]="d.performance.total_pnl >= 0"
+                                     [class.negative]="d.performance.total_pnl < 0">
+              {{ d.performance.total_pnl | currency:'USD' }}
+            </span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Posiciones Abiertas</span>
+            <span class="stat-value">{{ d.performance.open_positions }}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Órdenes Hoy</span>
+            <span class="stat-value">{{ d.performance.orders_today }}</span>
+          </div>
+        </div>
+      </section>
     </div>
 
-    <div class="section">
-      <h3>Información de la Cuenta</h3>
-      <div class="status-panel">
-        <div class="status-row">
-          <span>ID</span>
-          <span class="mono">{{ acc.id }}</span>
+    <!-- Row 2: Positions | Recent Logs -->
+    <div class="row row-2">
+      <section class="panel">
+        <h2 class="panel-title">Positions</h2>
+        <div class="panel-body table-wrap">
+          @if (d.positions.length === 0) {
+            <p class="empty">Sin posiciones abiertas</p>
+          } @else {
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Symbol</th>
+                  <th>Qty</th>
+                  <th>Avg Price</th>
+                  <th>Current</th>
+                  <th>PnL</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (pos of d.positions; track pos.symbol) {
+                  <tr>
+                    <td class="mono">{{ pos.symbol }}</td>
+                    <td>{{ pos.qty | number:'1.0-2' }}</td>
+                    <td>{{ pos.avg_price | currency:'USD':'symbol':'1.2-2' }}</td>
+                    <td>{{ pos.current_price | currency:'USD':'symbol':'1.2-2' }}</td>
+                    <td [class.positive]="pos.unrealized_pnl >= 0"
+                        [class.negative]="pos.unrealized_pnl < 0">
+                      {{ pos.unrealized_pnl | currency:'USD':'symbol':'1.2-2' }}
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
         </div>
-        <div class="status-row">
-          <span>Moneda</span>
-          <span>{{ acc.currency }}</span>
+      </section>
+
+      <section class="panel">
+        <h2 class="panel-title">Recent Logs</h2>
+        <div class="panel-body logs-wrap">
+          @if (d.recent_logs.length === 0) {
+            <p class="empty">Sin logs recientes</p>
+          } @else {
+            @for (log of d.recent_logs; track log.created_at) {
+              <div class="log-entry">
+                <span class="log-level" [class]="'level-' + log.level.toLowerCase()">{{ log.level }}</span>
+                <span class="log-msg">{{ log.message }}</span>
+                <span class="log-time mono">{{ log.created_at | date:'HH:mm:ss' }}</span>
+              </div>
+            }
+          }
         </div>
-        <div class="status-row">
-          <span>Estado</span>
-          <span class="tag" [class.online]="acc.status === 'ACTIVE'"
-                            [class.offline]="acc.status !== 'ACTIVE'">
-            {{ acc.status === 'ACTIVE' ? 'Activa' : acc.status }}
-          </span>
+      </section>
+    </div>
+
+    <!-- Row 3: Recent Orders -->
+    <div class="row row-1">
+      <section class="panel">
+        <h2 class="panel-title">Recent Orders</h2>
+        <div class="panel-body table-wrap">
+          @if (d.recent_orders.length === 0) {
+            <p class="empty">Sin órdenes recientes</p>
+          } @else {
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Symbol</th>
+                  <th>Side</th>
+                  <th>Qty</th>
+                  <th>Status</th>
+                  <th>Submitted</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (order of d.recent_orders; track order.submitted_at) {
+                  <tr>
+                    <td class="mono">{{ order.symbol }}</td>
+                    <td>
+                      <span class="side-tag" [class.buy]="order.side === 'buy'"
+                                             [class.sell]="order.side === 'sell'">
+                        {{ order.side | uppercase }}
+                      </span>
+                    </td>
+                    <td>{{ order.qty | number:'1.0-2' }}</td>
+                    <td>
+                      <span class="order-status" [class]="'os-' + order.status">{{ order.status }}</span>
+                    </td>
+                    <td class="mono">{{ order.submitted_at | date:'short' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
         </div>
-      </div>
+      </section>
     </div>
   </div>
 }

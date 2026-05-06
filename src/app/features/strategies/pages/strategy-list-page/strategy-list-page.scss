@@ -1,5 +1,11 @@
 @use 'page';
 
+$purple-light: #c084fc;
+$border: rgba(168, 85, 247, 0.2);
+$border-subtle: rgba(255, 255, 255, 0.06);
+$bg-panel: #111118;
+$text-muted: #71717a;
+
 .config-section {
   display: flex;
   flex-direction: column;
@@ -7,20 +13,26 @@
 }
 
 .config-card {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
+  background: $bg-panel;
+  border: 1px solid $border;
+  border-radius: 12px;
   padding: 1.25rem;
+  transition: border-color 0.2s;
+
+  &:hover { border-color: rgba(168, 85, 247, 0.4); }
 
   h4 {
     margin: 0 0 0.75rem;
-    font-size: 0.95rem;
-    color: #0f172a;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: $purple-light;
   }
 }
 
 .muted {
-  color: #94a3b8;
+  color: $text-muted;
   font-size: 0.875rem;
   margin: 0;
 }
@@ -29,12 +41,12 @@
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 0;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid $border-subtle;
   font-size: 0.875rem;
-  color: #334155;
+  color: $text-muted;
 }
 
 .param-value {
   font-weight: 600;
-  color: #0f172a;
+  color: #f8fafc;
 }
