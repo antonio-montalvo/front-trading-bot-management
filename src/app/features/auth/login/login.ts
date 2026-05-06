@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { switchMap } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -25,7 +26,9 @@ export class Login {
     this.error = '';
     this.loading = true;
 
-    this.auth.login(this.email, this.password).subscribe({
+    this.auth.login(this.email, this.password).pipe(
+      switchMap(() => this.auth.fetchBots())
+    ).subscribe({
       next: () => {
         this.router.navigate(['/dashboard']);
       },

@@ -12,6 +12,7 @@ export const environment = {
   botStart: '/api/bot/start',
   botStop: '/api/bot/stop',
   botStatus: '/api/bot/status',
+  botsList: '/api/bot/bots',
 
   // Broker
   brokerAccount: '/api/broker/account',

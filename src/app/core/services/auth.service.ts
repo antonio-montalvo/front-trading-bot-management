@@ -10,6 +10,11 @@ export interface TokenResponse {
   token_type: string;
 }
 
+export interface BotInstance {
+  id: string;
+  name: string;
+}
+
 export interface UserSession {
   email: string;
   access_token: string;
@@ -21,6 +26,7 @@ export class AuthService {
   private readonly TOKEN_KEY = 'access_token';
   private readonly REFRESH_KEY = 'refresh_token';
   private readonly EMAIL_KEY = 'user_email';
+  private readonly BOTS_KEY = 'user_bots';
 
   private readonly loggedIn$ = new BehaviorSubject<boolean>(this.hasToken());
 
@@ -42,6 +48,11 @@ export class AuthService {
     return localStorage.getItem(this.REFRESH_KEY);
   }
 
+  getBots(): BotInstance[] {
+    const raw = localStorage.getItem(this.BOTS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  }
+
   login(email: string, password: string): Observable<TokenResponse> {
     return this.http
       .post<TokenResponse>(environment.authLogin, { email, password })
@@ -50,6 +61,14 @@ export class AuthService {
           this.saveSession(email, res);
         })
       );
+  }
+
+  fetchBots(): Observable<BotInstance[]> {
+    return this.http.get<BotInstance[]>(environment.botsList).pipe(
+      tap((bots) => {
+        localStorage.setItem(this.BOTS_KEY, JSON.stringify(bots));
+      })
+    );
   }
 
   refresh(): Observable<TokenResponse> {
@@ -69,6 +88,7 @@ export class AuthService {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.REFRESH_KEY);
     localStorage.removeItem(this.EMAIL_KEY);
+    localStorage.removeItem(this.BOTS_KEY);
     this.loggedIn$.next(false);
     this.router.navigate(['/login']);
   }

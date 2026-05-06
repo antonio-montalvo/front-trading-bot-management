@@ -1,6 +1,8 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CurrencyPipe, DatePipe, DecimalPipe, UpperCasePipe } from '@angular/common';
+import { forkJoin } from 'rxjs';
 import { DashboardService } from '../../services/dashboard.service';
+import { AuthService, BotInstance } from '../../../../core/services/auth.service';
 
 export interface DashboardSummary {
   bot: {
@@ -50,24 +52,33 @@ export interface DashboardSummary {
   styleUrl: './dashboard-page.scss'
 })
 export class DashboardPage implements OnInit {
-  data = signal<DashboardSummary | null>(null);
+  botsSummary = signal<DashboardSummary[]>([]);
   loading = signal(true);
   error = signal<string | null>(null);
 
-  private readonly botId = localStorage.getItem('selected_bot_id') || '';
+  private readonly bots: BotInstance[];
 
-  constructor(private readonly dashboardService: DashboardService) {}
+  constructor(
+    private readonly dashboardService: DashboardService,
+    private readonly authService: AuthService
+  ) {
+    this.bots = this.authService.getBots();
+  }
 
   ngOnInit(): void {
-    if (!this.botId) {
-      this.error.set('No se ha seleccionado un bot');
+    if (!this.bots.length) {
+      this.error.set('No se encontraron bots asociados a tu cuenta');
       this.loading.set(false);
       return;
     }
 
-    this.dashboardService.getSummary(this.botId).subscribe({
-      next: (res) => {
-        this.data.set(res as DashboardSummary);
+    const requests = this.bots.map(bot =>
+      this.dashboardService.getSummary(bot.id)
+    );
+
+    forkJoin(requests).subscribe({
+      next: (results) => {
+        this.botsSummary.set(results as DashboardSummary[]);
         this.loading.set(false);
       },
       error: (err) => {
