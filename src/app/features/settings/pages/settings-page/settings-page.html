@@ -31,5 +31,62 @@
         <span class="setting-value">INFO</span>
       </div>
     </div>
+
+    <div class="settings-card">
+      <h4>Crear Nuevo Bot</h4>
+      <form [formGroup]="createBotForm" (ngSubmit)="onSubmit()" class="bot-form">
+        <div class="form-group">
+          <label for="botName">Nombre del Bot</label>
+          <input 
+            type="text" 
+            id="botName" 
+            formControlName="name" 
+            placeholder="Ej: Bot Mr T - Producción"
+            [class.error]="isFieldInvalid('name')"
+          />
+          @if (isFieldInvalid('name')) {
+            <span class="error-message">El nombre es requerido</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="brokerName">Broker</label>
+          <select id="brokerName" formControlName="broker_name">
+            <option value="alpaca">Alpaca</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="environment">Entorno</label>
+          <select id="environment" formControlName="environment">
+            <option value="paper">Paper Trading</option>
+            <option value="live">Live Trading</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" [disabled]="createBotForm.invalid || submitting()" class="btn-primary">
+            @if (submitting()) {
+              <span class="spinner-small"></span>
+              Creando...
+            } @else {
+              Crear Bot
+            }
+          </button>
+        </div>
+
+        @if (errorMessage()) {
+          <div class="error-banner">
+            {{ errorMessage() }}
+          </div>
+        }
+
+        @if (successMessage()) {
+          <div class="success-banner">
+            {{ successMessage() }}
+          </div>
+        }
+      </form>
+    </div>
   </div>
 </div>
