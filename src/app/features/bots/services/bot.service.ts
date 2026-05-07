@@ -6,17 +6,23 @@ import { Bot } from '../models/bot.model';
 
 @Injectable({ providedIn: 'root' })
 export class BotService {
+  private readonly baseUrl = `${environment.apiUrl}/bot`;
+
   constructor(private readonly http: HttpClient) {}
 
-  start(): Observable<unknown> {
-    return this.http.post(environment.botStart, {});
+  startBot(botId: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/start?bot_id=${botId}`, {});
   }
 
-  stop(): Observable<unknown> {
-    return this.http.post(environment.botStop, {});
+  stopBot(botId: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/stop?bot_id=${botId}`, {});
   }
 
-  getStatus(): Observable<unknown> {
-    return this.http.get(environment.botStatus);
+  deleteBot(botId: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${botId}`);
+  }
+
+  getStatus(botId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/status?bot_id=${botId}`);
   }
 }

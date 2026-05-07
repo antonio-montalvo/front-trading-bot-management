@@ -20,6 +20,41 @@
                                    [class.stopped]="d.bot.status === 'stopped'">
             {{ d.bot.status }}
           </span>
+          <div class="bot-menu">
+            <button class="menu-trigger" (click)="toggleMenu(d.bot.id)" type="button">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="1"/>
+                <circle cx="12" cy="5" r="1"/>
+                <circle cx="12" cy="19" r="1"/>
+              </svg>
+            </button>
+            @if (openMenuId() === d.bot.id) {
+              <div class="menu-dropdown">
+                @if (d.bot.status === 'stopped') {
+                  <button class="menu-item" (click)="startBot(d.bot.id)" type="button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                    Iniciar Bot
+                  </button>
+                } @else {
+                  <button class="menu-item" (click)="stopBot(d.bot.id)" type="button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="6" y="6" width="12" height="12"/>
+                    </svg>
+                    Detener Bot
+                  </button>
+                }
+                <button class="menu-item danger" (click)="deleteBot(d.bot.id)" type="button">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                  </svg>
+                  Eliminar Bot
+                </button>
+              </div>
+            }
+          </div>
         </div>
 
         <!-- Row 1: Bot Status | Account | Performance -->
