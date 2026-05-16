@@ -1,0 +1,141 @@
+<div class="page">
+  <div class="page-header">
+    <div class="header-left">
+      <button class="btn-back" (click)="goBack()">← Volver</button>
+      <h3>{{ strategy()?.name || 'Detalles de Estrategia' }}</h3>
+    </div>
+    <div class="header-actions">
+      @if (strategy()) {
+        <button class="btn-danger" (click)="deleteStrategy()">Eliminar</button>
+        <button class="btn-primary" (click)="toggleEdit()">
+          {{ editing() ? 'Cancelar' : 'Editar' }}
+        </button>
+      }
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="loading-container">
+      <p>Cargando estrategia...</p>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="error-message">
+      <p>{{ error() }}</p>
+      <button class="btn-secondary" (click)="loadStrategy()">Reintentar</button>
+    </div>
+  }
+
+  @if (strategy() && !loading()) {
+    <div class="strategy-detail">
+      <!-- Información básica -->
+      <div class="detail-section">
+        <h4>Información General</h4>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <label>Nombre</label>
+            @if (editing()) {
+              <input type="text" [(ngModel)]="editForm.name" class="form-input" />
+            } @else {
+              <p>{{ strategy()!.name }}</p>
+            }
+          </div>
+
+          <div class="detail-item">
+            <label>Tipo</label>
+            @if (editing()) {
+              <input type="text" [(ngModel)]="editForm.type" class="form-input" />
+            } @else {
+              <p>{{ strategy()!.type }}</p>
+            }
+          </div>
+
+          <div class="detail-item full-width">
+            <label>Descripción</label>
+            @if (editing()) {
+              <textarea [(ngModel)]="editForm.description" class="form-textarea" rows="3"></textarea>
+            } @else {
+              <p>{{ strategy()!.description }}</p>
+            }
+          </div>
+
+          <div class="detail-item">
+            <label>Bot ID</label>
+            <p>{{ strategy()!.bot_id }}</p>
+          </div>
+
+          <div class="detail-item">
+            <label>Estado</label>
+            <div class="status-toggle">
+              <span class="status-badge" [class.active]="strategy()!.is_active">
+                {{ strategy()!.is_active ? 'Activa' : 'Inactiva' }}
+              </span>
+              <button class="btn-sm" (click)="toggleActive()">
+                {{ strategy()!.is_active ? 'Desactivar' : 'Activar' }}
+              </button>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <label>Fecha de Creación</label>
+            <p>{{ strategy()!.created_at | date:'medium' }}</p>
+          </div>
+        </div>
+
+        @if (editing()) {
+          <div class="edit-actions">
+            <button class="btn-secondary" (click)="cancelEdit()">Cancelar</button>
+            <button class="btn-primary" (click)="saveChanges()">Guardar Cambios</button>
+          </div>
+        }
+      </div>
+
+      <!-- Parámetros de la estrategia -->
+      <div class="detail-section">
+        <div class="section-header">
+          <h4>Parámetros de la Estrategia</h4>
+          <button class="btn-secondary btn-sm" (click)="addParameter()">+ Agregar Parámetro</button>
+        </div>
+
+        @if (loadingParameters()) {
+          <p class="muted">Cargando parámetros...</p>
+        } @else if (parameters().length === 0) {
+          <p class="muted">No hay parámetros configurados</p>
+        } @else {
+          <div class="parameters-list">
+            @for (param of parameters(); track param.id) {
+              <div class="parameter-item">
+                <div class="param-info">
+                  <span class="param-key">{{ param.param_key }}</span>
+                  <span class="param-type">{{ param.data_type }}</span>
+                </div>
+                <div class="param-value-container">
+                  @if (editingParam() === param.id) {
+                    <input 
+                      type="text" 
+                      [(ngModel)]="paramEditValue"
+                      class="form-input-sm"
+                      (keyup.enter)="saveParameter(param)"
+                      (keyup.escape)="cancelParamEdit()" />
+                  } @else {
+                    <span class="param-value">{{ param.param_value }}</span>
+                  }
+                </div>
+                <div class="param-actions">
+                  @if (editingParam() === param.id) {
+                    <button class="btn-icon" (click)="saveParameter(param)" title="Guardar">✓</button>
+                    <button class="btn-icon" (click)="cancelParamEdit()" title="Cancelar">✗</button>
+                  } @else {
+                    <button class="btn-icon" (click)="editParameter(param)" title="Editar">✎</button>
+                    <button class="btn-icon danger" (click)="deleteParameter(param.id)" title="Eliminar">🗑</button>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

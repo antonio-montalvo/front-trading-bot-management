@@ -1,0 +1,91 @@
+<div class="strategy-form">
+  <h4>{{ isEdit ? 'Editar Estrategia' : 'Nueva Estrategia' }}</h4>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="bot_id">Bot *</label>
+      @if (loadingBots()) {
+        <p class="loading-text">Cargando bots...</p>
+      } @else {
+        <select 
+          id="bot_id"
+          formControlName="bot_id" 
+          class="form-select">
+          <option value="">Seleccionar bot...</option>
+          @for (bot of bots(); track bot.id) {
+            <option [value]="bot.id">{{ bot.name }} ({{ bot.status }})</option>
+          }
+        </select>
+        @if (form.get('bot_id')?.invalid && form.get('bot_id')?.touched) {
+          <span class="error-text">Bot es requerido</span>
+        }
+        @if (bots().length === 0 && !loadingBots()) {
+          <span class="info-text">No hay bots disponibles. Crea un bot primero.</span>
+        }
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="name">Nombre *</label>
+      <input 
+        id="name"
+        type="text" 
+        formControlName="name" 
+        class="form-input"
+        placeholder="Ej: Hybrid Squeeze Momentum" />
+      @if (form.get('name')?.invalid && form.get('name')?.touched) {
+        <span class="error-text">Nombre es requerido</span>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="type">Tipo *</label>
+      <input 
+        id="type"
+        type="text" 
+        formControlName="type" 
+        class="form-input"
+        placeholder="Ej: hybrid_squeeze_momentum" />
+      @if (form.get('type')?.invalid && form.get('type')?.touched) {
+        <span class="error-text">Tipo es requerido</span>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="description">Descripción *</label>
+      <textarea 
+        id="description"
+        formControlName="description" 
+        class="form-textarea"
+        rows="4"
+        placeholder="Descripción de la estrategia..."></textarea>
+      @if (form.get('description')?.invalid && form.get('description')?.touched) {
+        <span class="error-text">Descripción es requerida</span>
+      }
+    </div>
+
+    @if (error()) {
+      <div class="error-message">
+        <p>{{ error() }}</p>
+      </div>
+    }
+
+    @if (success()) {
+      <div class="success-message">
+        <p>{{ success() }}</p>
+      </div>
+    }
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="onCancel()">
+        Cancelar
+      </button>
+      <button 
+        type="submit" 
+        class="btn-primary" 
+        [disabled]="form.invalid || submitting()">
+        {{ submitting() ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,84 @@
+<div class="parameters-form">
+  <h4>{{ isEdit ? 'Editar Parámetro' : 'Nuevo Parámetro' }}</h4>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="param_key">Clave del Parámetro *</label>
+      <input 
+        id="param_key"
+        type="text" 
+        formControlName="param_key" 
+        class="form-input"
+        placeholder="Ej: market_regime.ema_fast" />
+      @if (form.get('param_key')?.invalid && form.get('param_key')?.touched) {
+        <span class="error-text">Clave es requerida</span>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="param_value">Valor *</label>
+      <input 
+        id="param_value"
+        type="text" 
+        formControlName="param_value" 
+        class="form-input"
+        placeholder="Ej: 21" />
+      @if (form.get('param_value')?.invalid && form.get('param_value')?.touched) {
+        <span class="error-text">Valor es requerido</span>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="data_type">Tipo de Dato *</label>
+      <select 
+        id="data_type"
+        formControlName="data_type" 
+        class="form-select">
+        <option value="">Seleccionar tipo...</option>
+        <option value="int">Entero (int)</option>
+        <option value="float">Decimal (float)</option>
+        <option value="str">Texto (str)</option>
+        <option value="bool">Booleano (bool)</option>
+        <option value="list">Lista (list)</option>
+      </select>
+      @if (form.get('data_type')?.invalid && form.get('data_type')?.touched) {
+        <span class="error-text">Tipo de dato es requerido</span>
+      }
+    </div>
+
+    <div class="help-text">
+      <p><strong>Ejemplos de valores según tipo:</strong></p>
+      <ul>
+        <li><strong>int:</strong> 21, 50, 100</li>
+        <li><strong>float:</strong> 0.01, 1.5, 25.0</li>
+        <li><strong>str:</strong> SPY, VIXY, 1Day</li>
+        <li><strong>bool:</strong> true, false</li>
+        <li><strong>list:</strong> AAPL,MSFT,GOOGL (separados por coma)</li>
+      </ul>
+    </div>
+
+    @if (error()) {
+      <div class="error-message">
+        <p>{{ error() }}</p>
+      </div>
+    }
+
+    @if (success()) {
+      <div class="success-message">
+        <p>{{ success() }}</p>
+      </div>
+    }
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="onCancel()">
+        Cancelar
+      </button>
+      <button 
+        type="submit" 
+        class="btn-primary" 
+        [disabled]="form.invalid || submitting()">
+        {{ submitting() ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
+</div>

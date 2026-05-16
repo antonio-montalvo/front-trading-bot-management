@@ -25,4 +25,8 @@ export class BotService {
   getStatus(botId: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/status?bot_id=${botId}`);
   }
+
+  getAllBots(): Observable<Bot[]> {
+    return this.http.get<Bot[]>(environment.botsList);
+  }
 }

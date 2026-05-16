@@ -1,29 +1,73 @@
 <div class="page">
   <div class="page-header">
-    <h3>Estrategia de Trading</h3>
+    <h3>Estrategias de Trading</h3>
+    <button class="btn-primary" (click)="createStrategy()">
+      <span>+ Nueva Estrategia</span>
+    </button>
   </div>
 
-  <div class="config-section">
-    <div class="config-card">
-      <h4>Estrategia Activa</h4>
-      <p class="muted">Sin estrategia configurada</p>
+  @if (loading()) {
+    <div class="loading-container">
+      <p>Cargando estrategias...</p>
     </div>
+  }
 
-    <div class="config-card">
-      <h4>Parámetros de Riesgo</h4>
-      <div class="param-row">
-        <span>Tamaño máximo de posición</span>
-        <span class="param-value">10%</span>
-      </div>
-      <div class="param-row">
-        <span>Pérdida diaria máxima</span>
-        <span class="param-value">2%</span>
-      </div>
+  @if (error()) {
+    <div class="error-message">
+      <p>{{ error() }}</p>
+      <button class="btn-secondary" (click)="loadStrategies()">Reintentar</button>
     </div>
+  }
 
-    <div class="config-card">
-      <h4>Símbolos</h4>
-      <p class="muted">Sin símbolos configurados</p>
-    </div>
-  </div>
+  @if (!loading() && !error()) {
+    @if (strategies().length === 0) {
+      <div class="empty-state">
+        <h4>No hay estrategias configuradas</h4>
+        <p class="muted">Crea tu primera estrategia para comenzar</p>
+        <button class="btn-primary" (click)="createStrategy()">Crear Estrategia</button>
+      </div>
+    } @else {
+      <div class="strategies-grid">
+        @for (strategy of strategies(); track strategy.id) {
+          <div class="strategy-card" [class.inactive]="!strategy.is_active">
+            <div class="strategy-header">
+              <div class="strategy-info">
+                <h4>{{ strategy.name }}</h4>
+                <span class="strategy-type">{{ strategy.type }}</span>
+              </div>
+              <div class="strategy-status">
+                <span class="status-badge" [class.active]="strategy.is_active">
+                  {{ strategy.is_active ? 'Activa' : 'Inactiva' }}
+                </span>
+              </div>
+            </div>
+
+            <div class="strategy-body">
+              <p class="strategy-description">{{ strategy.description }}</p>
+              <div class="strategy-meta">
+                <span class="meta-item">
+                  <strong>Bot ID:</strong> {{ strategy.bot_id }}
+                </span>
+                <span class="meta-item">
+                  <strong>Creada:</strong> {{ strategy.created_at | date:'short' }}
+                </span>
+              </div>
+            </div>
+
+            <div class="strategy-actions">
+              <button class="btn-secondary" (click)="viewDetails(strategy.id)">
+                Ver Detalles
+              </button>
+              <button 
+                class="btn-toggle" 
+                [class.active]="strategy.is_active"
+                (click)="toggleActive(strategy)">
+                {{ strategy.is_active ? 'Desactivar' : 'Activar' }}
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
 </div>

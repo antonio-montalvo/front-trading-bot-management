@@ -1,5 +1,191 @@
 @use 'page';
 
+.strategies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.strategy-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &.inactive {
+    opacity: 0.7;
+    background: var(--bg-secondary);
+  }
+}
+
+.strategy-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.strategy-info {
+  flex: 1;
+
+  h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+  }
+}
+
+.strategy-type {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: var(--bg-secondary);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.strategy-status {
+  .status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--error-bg);
+    color: var(--error-color);
+
+    &.active {
+      background: var(--success-bg);
+      color: var(--success-color);
+    }
+  }
+}
+
+.strategy-body {
+  margin-bottom: 1.5rem;
+}
+
+.strategy-description {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.strategy-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.meta-item {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+
+  strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+}
+
+.strategy-actions {
+  display: flex;
+  gap: 0.75rem;
+
+  button {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-secondary {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+
+    &:hover {
+      background: var(--bg-hover);
+      border-color: var(--primary-color);
+    }
+  }
+
+  .btn-toggle {
+    background: var(--error-bg);
+    border: 1px solid var(--error-color);
+    color: var(--error-color);
+
+    &:hover {
+      background: var(--error-color);
+      color: white;
+    }
+
+    &.active {
+      background: var(--success-bg);
+      border-color: var(--success-color);
+      color: var(--success-color);
+
+      &:hover {
+        background: var(--success-color);
+        color: white;
+      }
+    }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background: var(--card-bg);
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  margin-top: 2rem;
+
+  h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+  }
+
+  .muted {
+    margin-bottom: 1.5rem;
+  }
+
+  button {
+    padding: 0.75rem 1.5rem;
+  }
+}
+
+.loading-container,
+.error-message {
+  text-align: center;
+  padding: 2rem;
+  margin-top: 2rem;
+  background: var(--card-bg);
+  border-radius: 8px;
+}
+
+.error-message {
+  border: 1px solid var(--error-color);
+  background: var(--error-bg);
+
+  p {
+    color: var(--error-color);
+    margin-bottom: 1rem;
+  }
+}
+
 $purple-light: #c084fc;
 $border: rgba(168, 85, 247, 0.2);
 $border-subtle: rgba(255, 255, 255, 0.06);
